@@ -53,14 +53,14 @@ class Kernel
     }
 
     /**
-     * launch router and treat client request
+     * launch router and parse client request
      */
     private function launchRouter()
     {
-        $router = new Router($this->config["routing"]);
-        $router->init();
+        $this->router = new Router($this->config["routing"]);
 
-        $this->router = $router;
+        $this->router->init();
+        $this->router->process();
     }
 
     /**

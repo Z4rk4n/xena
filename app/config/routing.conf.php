@@ -8,6 +8,7 @@
  */
 return [
     "/" => [
-        "home" => "index",
+        "controller" => "home",
+        "method" => "index"
     ],
 ];
