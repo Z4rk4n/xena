@@ -1,5 +1,13 @@
 <?php
-
-$routingConf = [
-    ""
+/**
+ * return routing configuration
+ *
+ * "path" => [
+ *      "controller" => "method"
+ * ]
+ */
+return [
+    "/" => [
+        "home" => "index",
+    ],
 ];

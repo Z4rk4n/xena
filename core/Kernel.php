@@ -14,6 +14,12 @@ class Kernel
      */
     private $isRunning = false;
 
+
+    /**
+     * @var Router $router
+     */
+    private $router;
+
     private $config = [
         "plugins" => [],
         "routing" => []
@@ -31,9 +37,30 @@ class Kernel
 
             $this->initConstants();
             $this->loadPlugins();
+            $this->loadClasses();
             $this->loadRoutingConfig();
-
+            $this->launchRouter();
         }
+    }
+
+    /**
+     * load indispensable classes
+     */
+    private function loadClasses()
+    {
+        include CORE_DIR . "/class/Router.php";
+        include CORE_DIR . "/class/Controller.php";
+    }
+
+    /**
+     * launch router and treat client request
+     */
+    private function launchRouter()
+    {
+        $router = new Router($this->config["routing"]);
+        $router->init();
+
+        $this->router = $router;
     }
 
     /**
@@ -59,9 +86,8 @@ class Kernel
             $pluginPath = CORE_DIR . "/plugins/" . $plugin . ".php";
 
             if ($enabled && file_exists($pluginPath)) {
-                require $pluginPath;
+                include $pluginPath;
             }
-
         }
     }
 
