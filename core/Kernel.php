@@ -3,25 +3,10 @@
 /**
  * Class Kernel
  *
- * The kernel of application
+ * ABC of this project
  */
 class Kernel
 {
-
-    /**
-     * controller
-     *
-     * @var string
-     */
-    private $ctrl = "";
-
-    /**
-     * method
-     *
-     * @var string
-     */
-    private $method = "";
-
     /**
      * OS running
      *
@@ -29,60 +14,73 @@ class Kernel
      */
     private $isRunning = false;
 
-    /**
-     * Kernel constructor.
-     */
-    public function __construct() {}
+    private $config = [
+        "plugins" => [],
+        "routing" => []
+    ];
 
     /**
      * Just boot it
+     * init const
      */
     public function boot()
     {
         if (!$this->isRunning) {
-            $this->parseUri();
+
             $this->isRunning = true;
+
+            $this->initConstants();
+            $this->loadPlugins();
+            $this->loadRoutingConfig();
+
         }
     }
 
     /**
-     * parse request uri and fill ctrl, method and args
+     * Initialise constants
      */
-    private function parseUri()
+    private function initConstants()
     {
-        $explode = explode("/", URI);
-        unset($explode[0]);
+        define("URI", $_SERVER["REQUEST_URI"]);
+        define("BASE_DIR", $_SERVER["DOCUMENT_ROOT"]);
+        define("CORE_DIR", BASE_DIR . "/core");
+        define("APP_DIR", BASE_DIR . "/app");
+    }
 
-        $ctrl = (isset($explode[1])) ? $explode[1] : "";
-        $method = (isset($explode[2])) ? $explode[2] : "";
+    /**
+     * load plugins && fill config > plugins
+     */
+    private function loadPlugins()
+    {
+        $this->config["plugins"] = include APP_DIR . "/config/plugins.conf.php";
 
-        if (!empty($ctrl) && preg_match("/^[a-z][A-z]*$/", $ctrl)) {
-            $this->ctrl = $ctrl;
-        }
+        foreach ($this->config["plugins"] as $plugin => $enabled) {
 
-        if (!empty($method) && preg_match("/^[a-z][A-Z]*$/", $method)) {
-            $this->method = $method;
+            $pluginPath = CORE_DIR . "/plugins/" . $plugin . ".php";
+
+            if ($enabled && file_exists($pluginPath)) {
+                require $pluginPath;
+            }
+
         }
     }
 
     /**
-     * get controller
+     * load routing config file && fill config > routing
+     */
+    private function loadRoutingConfig()
+    {
+        $this->config["routing"] = include APP_DIR . "/config/routing.conf.php";
+    }
+
+    /**
+     * config getter
      *
-     * @return string
+     * @return array
      */
-    public function getController()
+    public function getConfig()
     {
-        return $this->ctrl;
-    }
-
-    /**
-     * get method
-     *
-     * @return string
-     */
-    public function getMethod()
-    {
-        return $this->method;
+        return $this->config;
     }
 
 
