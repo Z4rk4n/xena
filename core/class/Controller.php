@@ -6,4 +6,8 @@
 abstract class Controller
 {
 
+    protected $view;
+
+
+
 }
