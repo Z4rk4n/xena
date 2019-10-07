@@ -78,7 +78,7 @@ class Router
     public function init()
     {
 
-        // best routing ever 
+        // best routing ever
         foreach ($this->config as $path => $conf) {
             if (URI == $path) { // MATCH !
                 $this->controller = $conf["controller"];
