@@ -50,6 +50,7 @@ class Kernel
     {
         include CORE_DIR . "/class/Router.php";
         include CORE_DIR . "/class/Controller.php";
+        include CORE_DIR . "/class/View.php";
     }
 
     /**
