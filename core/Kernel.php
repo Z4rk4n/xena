@@ -110,6 +110,5 @@ class Kernel
         return $this->config;
     }
 
-
 }
 

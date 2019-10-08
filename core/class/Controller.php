@@ -29,4 +29,18 @@ abstract class Controller
         $this->name = get_called_class();
     }
 
+    /**
+     * @param bool $format
+     * @return string
+     */
+    public function getName($format = false)
+    {
+        if ($format) {
+            $return = trim(str_replace("Controller",  "", $this->name));
+        } else {
+            $return = $this->name;
+        }
+        return $return;
+    }
+
 }
