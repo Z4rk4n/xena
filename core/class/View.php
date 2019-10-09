@@ -43,22 +43,43 @@ class View
     private $viewPath;
 
     /**
+     * View constructor.
+     * @param string $controller
+     */
+    public function __construct($controller)
+    {
+        $this->viewPath = APP_DIR . "/views/" . $controller;
+    }
+
+    /**
+     * view rendering
+     */
+    public function render()
+    {
+        ob_start();
+        require $this->viewPath . "/" . $this->viewFileName;
+        $content = ob_get_clean();
+        require $this->layoutPath . "/" . $this->layoutFileName;
+    }
+
+    /**
      * set layout
      *
      * @param string $layout
      */
-    public function setLayout(string $layout)
+    public function setLayout($layout)
     {
         $this->layout = $layout;
         $this->layoutFileName = $layout . ".php";
-        $this->layoutPath = APP_DIR . "/views/layout";
     }
 
-    public function setView(string $view)
+    /**
+     * set view
+     *
+     * @param string $view
+     */
+    public function setView($view)
     {
-
-        global $kernel;
-
         $this->view = $view;
         $this->viewFileName = $view . ".php";
     }

@@ -25,21 +25,24 @@ abstract class Controller
      */
     public function __construct()
     {
-        $this->view = new View();
         $this->name = get_called_class();
+        $this->view = new View($this->getName(true));
     }
 
     /**
+     * return name of current controllers
+     *
      * @param bool $format
      * @return string
      */
     public function getName($format = false)
     {
         if ($format) {
-            $return = trim(str_replace("Controller",  "", $this->name));
+            $return = strtolower(str_replace("Controller",  "", $this->name));
         } else {
             $return = $this->name;
         }
+
         return $return;
     }
 

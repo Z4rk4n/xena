@@ -8,7 +8,8 @@ class ErrorController extends Controller
      */
     public function show()
     {
-        echo "404 :(";
+        $this->view->setView("404");
+        $this->view->render();
     }
 
 }

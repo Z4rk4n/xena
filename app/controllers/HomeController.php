@@ -8,7 +8,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        echo "Index !";
+        $this->view->setView("index");
+        $this->view->render();
     }
 
 }
