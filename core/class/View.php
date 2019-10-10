@@ -43,6 +43,12 @@ class View
     private $viewPath;
 
     /**
+     * contains the variables for the view
+     * @var array
+     */
+    private $params = [];
+
+    /**
      * View constructor.
      * @param string $controller
      */
@@ -56,10 +62,34 @@ class View
      */
     public function render()
     {
+        // child view rendering
         ob_start();
+        extract($this->params);
         require $this->viewPath . "/" . $this->viewFileName;
+
+        // parent view rendering ( layout )
         $content = ob_get_clean();
         require $this->layoutPath . "/" . $this->layoutFileName;
+    }
+
+
+    /**
+     * add param
+     * @param $var
+     * @param $value
+     */
+    public function addParam($var, $value)
+    {
+        $this->params[$var] = $value;
+    }
+
+    /**
+     * set params
+     * @param array $params
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
     }
 
     /**

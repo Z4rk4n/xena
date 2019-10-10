@@ -9,6 +9,9 @@ class ErrorController extends Controller
     public function show()
     {
         $this->view->setView("404");
+
+        $this->view->addParam("errorCode", "404");
+
         $this->view->render();
     }
 
