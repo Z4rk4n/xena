@@ -43,10 +43,16 @@ class View
     private $viewPath;
 
     /**
-     * contains the variables for the view
+     * contains view variables
      * @var array
      */
     private $params = [];
+
+    /**
+     * contains view scripts
+     * @var array
+     */
+    private $scripts = [];
 
     /**
      * View constructor.
@@ -63,15 +69,24 @@ class View
     public function render()
     {
         // child view rendering
-        ob_start();
         extract($this->params);
         require $this->viewPath . "/" . $this->viewFileName;
 
-        // parent view rendering ( layout )
+        // parent view rendering
+        ob_start();
+
+        // load view scripts
+        $scripts = "";
+        foreach ($this->scripts as $link => $type) {
+            $scripts .= sprintf(
+                "<script type='%s' src='%s'></script>\n",
+                $type,
+                $link
+            );
+        }
         $content = ob_get_clean();
         require $this->layoutPath . "/" . $this->layoutFileName;
     }
-
 
     /**
      * add param
@@ -90,6 +105,11 @@ class View
     public function setParams($params)
     {
         $this->params = $params;
+    }
+
+    public function addScript($type, $link)
+    {
+        $this->scripts[$link] = $type;
     }
 
     /**
