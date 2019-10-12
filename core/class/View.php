@@ -55,6 +55,12 @@ class View
     private $scripts = [];
 
     /**
+     * contains view links
+     * @var array
+     */
+    private $links = [];
+
+    /**
      * View constructor.
      * @param string $controller
      */
@@ -84,6 +90,17 @@ class View
                 $link
             );
         }
+
+        // load view links
+        $links = "";
+        foreach ($this->links as $link => $rel) {
+            $links .= sprintf(
+                "<link rel='%s' href='%s' />\n",
+                $rel,
+                $link
+            );
+        }
+
         $content = ob_get_clean();
         require $this->layoutPath . "/" . $this->layoutFileName;
     }
@@ -99,17 +116,22 @@ class View
     }
 
     /**
-     * set params
-     * @param array $params
+     * add script
+     * @param $type
+     * @param $link
      */
-    public function setParams($params)
-    {
-        $this->params = $params;
-    }
-
     public function addScript($type, $link)
     {
         $this->scripts[$link] = $type;
+    }
+
+    /**
+     * add link
+     * @param $rel
+     * @param $link
+     */
+    public function addLink($rel, $link) {
+        $this->links[$link] = $link;
     }
 
     /**

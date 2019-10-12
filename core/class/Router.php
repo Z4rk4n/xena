@@ -51,15 +51,17 @@ class Router
     {
         $match = false; // 404
 
+        $uriPath = parse_url(URI)["path"];
+
         foreach ($this->config as $path => $conf) {
-            if (URI == $path) { // MATCH !
+            if ($uriPath == $path) { // MATCH !
                 $this->controller = $conf["controller"];
                 $this->method = $conf["method"];
                 $match = true;
             }
         }
 
-        if (!$match) {
+        if (!$match) { // 404
             $this->controller = "ErrorController";
             $this->method = "show";
         }
