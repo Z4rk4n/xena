@@ -73,6 +73,7 @@ class Kernel
         define("BASE_DIR", $_SERVER["DOCUMENT_ROOT"]);
         define("CORE_DIR", BASE_DIR . "/core");
         define("APP_DIR", BASE_DIR . "/app");
+        define("PUBLIC_DIR", BASE_DIR . "/public");
     }
 
     /**

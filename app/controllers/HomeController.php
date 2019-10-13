@@ -10,9 +10,6 @@ class HomeController extends Controller
     {
         $this->view->setView("index");
 
-        $this->view->addScript("text/javascript", "/main.js");
-        $this->view->addLink("text/javascript", "/main.js");
-
         $this->view->render();
     }
 

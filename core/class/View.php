@@ -67,6 +67,7 @@ class View
     public function __construct($controller)
     {
         $this->viewPath = APP_DIR . "/views/" . $controller;
+        $this->addLink("stylesheet", PUBLIC_DIR . "/css/main.css");
     }
 
     /**
@@ -81,18 +82,22 @@ class View
         // parent view rendering
         ob_start();
 
-        // load view scripts
-        $scripts = "";
-        foreach ($this->scripts as $link => $type) {
-            $scripts .= sprintf(
-                "<script type='%s' src='%s'></script>\n",
-                $type,
-                $link
-            );
-        }
+        $scripts = $this->loadScripts();
+        $links = $this->loadLinks();
 
-        // load view links
+        $content = ob_get_clean();
+        require $this->layoutPath . "/" . $this->layoutFileName;
+    }
+
+    /**
+     * load links
+     *
+     * @return string
+     */
+    private function loadLinks()
+    {
         $links = "";
+
         foreach ($this->links as $link => $rel) {
             $links .= sprintf(
                 "<link rel='%s' href='%s' />\n",
@@ -101,8 +106,27 @@ class View
             );
         }
 
-        $content = ob_get_clean();
-        require $this->layoutPath . "/" . $this->layoutFileName;
+        return $links;
+    }
+
+    /**
+     * load scripts
+     *
+     * @return string
+     */
+    private function loadScripts()
+    {
+        $scripts = "";
+
+        foreach ($this->scripts as $link => $type) {
+            $scripts .= sprintf(
+                "<script type='%s' src='%s'></script>\n",
+                $type,
+                $link
+            );
+        }
+
+        return $scripts;
     }
 
     /**
@@ -130,7 +154,8 @@ class View
      * @param $rel
      * @param $link
      */
-    public function addLink($rel, $link) {
+    public function addLink($rel, $link)
+    {
         $this->links[$link] = $link;
     }
 
